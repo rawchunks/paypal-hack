@@ -41,7 +41,7 @@ You can test the full production stack on [app.rawchunks.space](https://app.rawc
 | `ag-grid-community` | `36.3.0` | Dependency of the Grid packages; app imports module registration, column definitions and renderer types. |
 | `ag-grid-enterprise` | `36.3.0` | Installed package; current tables register Community modules. |
 
-Versions: [app/package-lock.json](/Users/jabyl/Downloads/coding/rawchunks/app/package-lock.json). Backend PayPal calls use `fetch`; `PayPal` accepts an injected HTTP transport.
+Versions: [app/package-lock.json](https://github.com/rawchunks/app/blob/main/package-lock.json). Backend PayPal calls use `fetch`; `PayPal` accepts an injected HTTP transport.
 
 ## PayPal
 
@@ -72,7 +72,7 @@ Every field receives `styleOptions: { disablePrerender: true }`. Rawchunks passe
 
 ### Frontend function inventory
 
-In [connector.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/connector.tsx:178):
+In [connector.tsx](https://github.com/rawchunks/app/blob/main/src/components/connector.tsx#L178):
 
 | Function or callback | Responsibility |
 | --- | --- |
@@ -94,7 +94,7 @@ In [connector.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/co
 
 `callbacksRef` updates on every render, while the field initialization effect depends on script resolution. This lets callbacks read current packs/account context without rebuilding all four iframes.
 
-PayPal loading and checkout entry points in [session.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/session.tsx:530):
+PayPal loading and checkout entry points in [session.tsx](https://github.com/rawchunks/app/blob/main/src/components/session.tsx#L530):
 
 | Function/callback | PayPal use |
 | --- | --- |
@@ -130,11 +130,11 @@ One USD uses 1,000,000 atomic units; one Credit uses 10,000. Backend `packs` sup
 | `readCachedPayPalClientId`, `writeCachedPayPalClientId` | Persist/read `paypalClientId`, environment and packs in `rawchunks:paypal-config`. |
 | `readCachedCredits`, `writeCachedCredits` | Preserve the displayed purchased balance and checkout configuration across refreshes. |
 
-Sources: [credits.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/lib/credits.ts), [use-credits.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/hooks/use-credits.ts:168), [cache.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/lib/cache.ts:126).
+Sources: [credits.ts](https://github.com/rawchunks/app/blob/main/src/lib/credits.ts), [use-credits.ts](https://github.com/rawchunks/app/blob/main/src/hooks/use-credits.ts#L168), [cache.ts](https://github.com/rawchunks/app/blob/main/src/lib/cache.ts#L126).
 
 ### License checkout
 
-[Licenses](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/songs/licenses.tsx) mounts `PayPalCardFields` when `cardMode && testnetMode`.
+[Licenses](https://github.com/rawchunks/app/blob/main/src/components/songs/licenses.tsx) mounts `PayPalCardFields` when `cardMode && testnetMode`.
 
 | Function/callback | PayPal use |
 | --- | --- |
@@ -148,7 +148,7 @@ Sources: [credits.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/lib/credit
 | Hosted-fields `onCancel` | Returns from card entry by setting `cardMode` to `false`. |
 | `completeFiatOrder` | Guards concurrent completion, captures the saved order, accepts `completed`/`credited`, rechecks ownership and continues the license purchase if needed; resets pending state in `finally`. |
 
-Source for the two order helpers: [use-license.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/hooks/use-license.ts:278).
+Source for the two order helpers: [use-license.ts](https://github.com/rawchunks/app/blob/main/src/hooks/use-license.ts#L278).
 
 ### Application endpoints used by PayPal checkout
 
@@ -170,7 +170,7 @@ IDs allow 1–128 characters. License `amountAtomics` matches `^[1-9][0-9]{0,17}
 
 `creditsRouter` registers these handlers under `/api` when `CREDITS_ENABLED === "true"`; its `body` helper validates requests and nested `key` validates the idempotency header. Pack network uses the body, then `x-network-id`; wallet defaults to the selected account. Operation reads attempt `PayPal.reconcile` for pending orders before returning current state.
 
-Sources: [router.ts](/Users/jabyl/Downloads/coding/rawchunks/backend/credits/router.ts:43), [registration](/Users/jabyl/Downloads/coding/rawchunks/backend/index.ts:108).
+Sources: [router.ts](https://github.com/rawchunks/backend/blob/main/credits/router.ts#L43), [registration](https://github.com/rawchunks/backend/blob/main/index.ts#L108).
 
 ### PayPal REST calls
 
@@ -188,7 +188,7 @@ Sources: [router.ts](/Users/jabyl/Downloads/coding/rawchunks/backend/credits/rou
 
 ### Every PayPal backend function
 
-Source: [paypal.ts](/Users/jabyl/Downloads/coding/rawchunks/backend/credits/paypal.ts).
+Source: [paypal.ts](https://github.com/rawchunks/backend/blob/main/credits/paypal.ts).
 
 | Function/method | Exact responsibility |
 | --- | --- |
@@ -223,19 +223,19 @@ Local `purchase` operations finish as `credited`; local `license` operations fin
 | `PAYPAL_MERCHANT_EMAIL`, `PAYPAL_EMAIL` | Expected payee email, in that priority order. |
 | `PAYPAL_WEBHOOK_ID` | Webhook signature-verification target. |
 
-`PAYPAL_STYLE_VARS` maps body/input/card-icon/placeholder/hover/focus/valid/invalid/focused-invalid rules to `--paypal-card-*` CSS variables. `readPayPalCardStyle` resolves background, text, borders, shadows, font, padding, height and transitions before creating hosted fields. Source: [components.css](/Users/jabyl/Downloads/coding/rawchunks/app/src/styles/components.css:3311).
+`PAYPAL_STYLE_VARS` maps body/input/card-icon/placeholder/hover/focus/valid/invalid/focused-invalid rules to `--paypal-card-*` CSS variables. `readPayPalCardStyle` resolves background, text, borders, shadows, font, padding, height and transitions before creating hosted fields. Source: [components.css](https://github.com/rawchunks/app/blob/main/src/styles/components.css#L3311).
 
 New order requests use `order-{operationId}` and capture uses `capture-{operationId}`, both environment-prefixed in PayPal's request header.
 
-[The recovery timer](/Users/jabyl/Downloads/coding/rawchunks/backend/index.ts:113) calls `reconcile` every 30 seconds for up to 20 pending purchase operations from the last three days. License order reads/capture requests also reconcile. Verified webhook events enter storage once by event ID; the webhook handler doesn't capture an order itself.
+[The recovery timer](https://github.com/rawchunks/backend/blob/main/index.ts#L113) calls `reconcile` every 30 seconds for up to 20 pending purchase operations from the last three days. License order reads/capture requests also reconcile. Verified webhook events enter storage once by event ID; the webhook handler doesn't capture an order itself.
 
-[credits-paypal.test.ts](/Users/jabyl/Downloads/coding/rawchunks/backend/tests/unit/credits-paypal.test.ts) covers order/capture validation, replay, lost capture responses, owner checks, webhook rejection and CREATED-with-card recovery.
+[credits-paypal.test.ts](https://github.com/rawchunks/backend/blob/main/tests/unit/credits-paypal.test.ts) covers order/capture validation, replay, lost capture responses, owner checks, webhook rejection and CREATED-with-card recovery.
 
 ## AG Grid
 
 ### Registration and API calls
 
-[utils.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/utils.ts) imports `AllCommunityModule` as `GridCommunityModule` and `ModuleRegistry` as `GridModuleRegistry`; it calls `GridModuleRegistry.registerModules([GridCommunityModule])`.
+[utils.ts](https://github.com/rawchunks/app/blob/main/src/components/ag/utils.ts) imports `AllCommunityModule` as `GridCommunityModule` and `ModuleRegistry` as `GridModuleRegistry`; it calls `GridModuleRegistry.registerModules([GridCommunityModule])`.
 
 Songs, focused genre details and activity each render `AgGridReact` with React-computed rows and column definitions. Grid updates use those props and stable row IDs. There are no imperative Grid API calls in these components.
 
@@ -270,13 +270,13 @@ Song columns: title `flex: 1.6`, min width 105/130; profit width 76/88; plays 58
 
 | Source | Functions and use |
 | --- | --- |
-| [index.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/index.tsx) | `Earn` owns table focus and supplies rows. Media-query `onChange` updates `isMobile`; `toggleFocus` expands/collapses a block. `networkOptions`/`viewSwitchOptions` define controls. `normalizedSongs` builds table rows; `unifiedEvents` builds feed rows using `windowCutoffMs`. |
-| [songs.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/songs.tsx) | `SongsBlock` owns song/genre view, sort, search and genre metric. `sortedSongs` filters/sorts input. `handleSongRowClicked` requires focus, row song and `onSelectSong`. `songsColumnDefs` constructs responsive columns. |
-| [genres.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/genres.tsx) | `GenreBadges`/`cleanGenres` split, trim and deduplicate labels. `GenreBreakdown`/`genreSlices` aggregate rows by genre. `genreDetailCols` builds the single details column; its `cellRenderer` displays metric totals. |
-| [feed.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/feed.tsx) | `ActivityFeed` owns feed mode and filters. `filteredPlayEvents`, `settlementEvents`, `streamEventsCount`, `licenseEventsCount`, `totalSettledUsd` select/count/sum rows; `feedRows` selects the active mode's rows. `feedColumnDefs` builds the receipt column and its `cellRenderer`. |
-| [dropdown.tsx](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/dropdown.tsx) | `AgHeaderTooltip` renders the grid header tooltip. `BlockDropdown` selects view/sort/filter; `handleOutside` and `handleKey` close it, option `onClick` calls `onChange` and closes. |
-| [utils.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/components/ag/utils.ts:224) | `getSongRowId`, `getGenreRowId`, `getFeedRowId` return stable IDs. `formatMs` formats listening duration; `shortTx` abbreviates hashes; `timeAgo` formats elapsed time; `ratioTone` selects ratio color. |
-| [use-earnings.ts](/Users/jabyl/Downloads/coding/rawchunks/app/src/hooks/use-earnings.ts:14) | Grid renderers call `formatUsd` for monetary values and `getNetworkLogo` for network icons. `useCreatorEarnings` fetches the input data described below. |
+| [index.tsx](https://github.com/rawchunks/app/blob/main/src/components/ag/index.tsx) | `Earn` owns table focus and supplies rows. Media-query `onChange` updates `isMobile`; `toggleFocus` expands/collapses a block. `networkOptions`/`viewSwitchOptions` define controls. `normalizedSongs` builds table rows; `unifiedEvents` builds feed rows using `windowCutoffMs`. |
+| [songs.tsx](https://github.com/rawchunks/app/blob/main/src/components/ag/songs.tsx) | `SongsBlock` owns song/genre view, sort, search and genre metric. `sortedSongs` filters/sorts input. `handleSongRowClicked` requires focus, row song and `onSelectSong`. `songsColumnDefs` constructs responsive columns. |
+| [genres.tsx](https://github.com/rawchunks/app/blob/main/src/components/ag/genres.tsx) | `GenreBadges`/`cleanGenres` split, trim and deduplicate labels. `GenreBreakdown`/`genreSlices` aggregate rows by genre. `genreDetailCols` builds the single details column; its `cellRenderer` displays metric totals. |
+| [feed.tsx](https://github.com/rawchunks/app/blob/main/src/components/ag/feed.tsx) | `ActivityFeed` owns feed mode and filters. `filteredPlayEvents`, `settlementEvents`, `streamEventsCount`, `licenseEventsCount`, `totalSettledUsd` select/count/sum rows; `feedRows` selects the active mode's rows. `feedColumnDefs` builds the receipt column and its `cellRenderer`. |
+| [dropdown.tsx](https://github.com/rawchunks/app/blob/main/src/components/ag/dropdown.tsx) | `AgHeaderTooltip` renders the grid header tooltip. `BlockDropdown` selects view/sort/filter; `handleOutside` and `handleKey` close it, option `onClick` calls `onChange` and closes. |
+| [utils.ts](https://github.com/rawchunks/app/blob/main/src/components/ag/utils.ts#L224) | `getSongRowId`, `getGenreRowId`, `getFeedRowId` return stable IDs. `formatMs` formats listening duration; `shortTx` abbreviates hashes; `timeAgo` formats elapsed time; `ratioTone` selects ratio color. |
+| [use-earnings.ts](https://github.com/rawchunks/app/blob/main/src/hooks/use-earnings.ts#L14) | Grid renderers call `formatUsd` for monetary values and `getNetworkLogo` for network icons. `useCreatorEarnings` fetches the input data described below. |
 
 #### Column renderers
 
@@ -312,7 +312,7 @@ Song columns: title `flex: 1.6`, min width 105/130; profit width 76/88; plays 58
 
 ### Row data and filtering
 
-The tables receive data through `Earn` props: `songs`, `songMetrics`, `events`, network/source/date filters and `onSelectSong`. [useCreatorEarnings](/Users/jabyl/Downloads/coding/rawchunks/app/src/hooks/use-earnings.ts:364) requests `GET /api/earnings?creator={encoded address}` with `x-user-address: address`; it uses query key `['earnings', 'creator', address]`, enables requests for a nonempty address and passes the query's abort signal. It returns `CreatorEarningsResponse` or `null` on a failed HTTP response, with a 10-second stale time, 15-second polling and refresh on window focus. AG Grid receives the computed rows through `rowData`.
+The tables receive data through `Earn` props: `songs`, `songMetrics`, `events`, network/source/date filters and `onSelectSong`. [useCreatorEarnings](https://github.com/rawchunks/app/blob/main/src/hooks/use-earnings.ts#L364) requests `GET /api/earnings?creator={encoded address}` with `x-user-address: address`; it uses query key `['earnings', 'creator', address]`, enables requests for a nonempty address and passes the query's abort signal. It returns `CreatorEarningsResponse` or `null` on a failed HTTP response, with a 10-second stale time, 15-second polling and refresh on window focus. AG Grid receives the computed rows through `rowData`.
 
 | Table row type | Fields |
 | --- | --- |
@@ -328,7 +328,7 @@ Row amounts are USD numbers, durations use milliseconds, timestamps use Unix mil
 
 ### Grid styling
 
-[Grid CSS](/Users/jabyl/Downloads/coding/rawchunks/app/src/styles/mypage.css:3689) supplies `--ag-background-color`, `--ag-foreground-color`, header colors, border/row-border, hover/selected-row colors, font family/size and horizontal padding. It removes wrapper borders, hides header menu/filter icons, applies `cm-ag-right` alignment and removes activity headers.
+[Grid CSS](https://github.com/rawchunks/app/blob/main/src/styles/mypage.css#L3689) supplies `--ag-background-color`, `--ag-foreground-color`, header colors, border/row-border, hover/selected-row colors, font family/size and horizontal padding. It removes wrapper borders, hides header menu/filter icons, applies `cm-ag-right` alignment and removes activity headers.
 
 Genre colors use `BRAND_PALETTE`: `#00ff41`, `#00ccff`, `#ff0055`, `#ffaa00`, `#00e5a3`, `#38bdf8`.
 
